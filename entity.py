@@ -10,10 +10,18 @@ class Entity(object):
         self.Fnet = Vector2D()
         self.mass = 0
         self.invMass = 0
+        self.w, self.h = (0, 0)
         
     def update(self, dt):
         pass
     
+    def setSize(self, width, height):
+        self.w = width
+        self.h = height
+        
+    def setID(self, identification):
+        self.ID = identification
+        
     def setMass(self, mass):
         self.mass = mass
         if mass > 0:
