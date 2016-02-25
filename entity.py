@@ -13,7 +13,10 @@ class Entity(object):
         self.w, self.h = (0, 0)
         
     def update(self, dt):
-        pass
+        self.position += self.velocity*dt
+        self.acceleration = self.Fnet*self.invMass
+        self.velocity += self.acceleration*dt
+        self.Fnet = Vector2D()
     
     def setSize(self, width, height):
         self.w = width
