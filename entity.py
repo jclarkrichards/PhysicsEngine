@@ -3,7 +3,7 @@ from vectors import Vector2D
 
 class Entity(object):
     def __init__(self, x, y):
-        self.ID = 0
+        self.ID = None
         self.position = Vector2D(x, y)
         self.velocity = Vector2D()
         self.acceleration = Vector2D()
