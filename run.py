@@ -2,15 +2,39 @@ import pygame
 from pygame.locals import *
 from particle import Particle
 from forces import Gravity
+from forceRegistry import ForceRegistry
 
 SCREENSIZE = (600,400)
 pygame.init()
-screen 
+screen = pygame.display.set_mode(SCREENSIZE, 0, 32)
+background = pygame.surface.Surface(SCREENSIZE).convert()
+background.fill((0,0,0))
+clock = pygame.time.Clock()
 
-p = Particle(40, 100)
+particle = Particle(40, 100)
+particle.setMass(20)
+particle.setVelocity(40,-100)
+particle2 = Particle(440, 100)
+particle2.setMass(40)
+particle2.setVelocity(-40,-100)
+particle2.ID = 1
+
 gravity = Gravity()
+registry = ForceRegistry()
+registry.addGravity(particle)
+registry.addGravity(particle2)
 
 while True:
-    gravity.updateForce(particle)
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            exit()
+            
+    dt = clock.tick(30) / 1000.0
+    registry.updateForces(dt)
+    #gravity.updateForce(particle)
     particle.update(dt)
+    particle2.update(dt)
+    screen.blit(background, (0,0))
     particle.render(screen)
+    particle2.render(screen)
+    pygame.display.update()
