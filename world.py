@@ -3,27 +3,34 @@ class World(object):
         self.staticOBJ = {}
         self.dynamicOBJ = {}
     
-    def __addObject__(self, database, object):
-        if object.ID in database.keys():
+    def __addObject__(self, database, obj):
+        if obj.ID in database.keys():
              return
         if len(database) == 0:
-            database[0] = object
+            database[0] = obj
             return
         newID = max(database.keys()) + 1
-        object.ID = newID
-        database[newID] = object
+        obj.ID = newID
+        database[newID] = obj
      
-    def addStaticObject(self, object):
-        self.__addObject__(self.staticOBJ, object)
+    def addStaticObject(self, obj):
+        self.__addObject__(self.staticOBJ, obj)
   
-    def addDynamicObject(self, object):
-        self.__addObject__(self.dynamicOBJ, object)
+    def addDynamicObject(self, obj):
+        self.__addObject__(self.dynamicOBJ, obj)
+        
+    def __removeObject__(self, database, obj):
+        if obj.ID not in database.keys():
+            return
+        if len(database) == 0:
+            return
+        removedEntity = database.pop(obj.ID)
   
-    def removeStaticObject(self, object):
-        pass
+    def removeStaticObject(self, obj):
+        self.__removeObject__(self.staticOBJ, obj)
   
-    def removeDynamicObject(self, object):
-        pass
+    def removeDynamicObject(self, obj):
+        self.__removeObject__(self.dynamicOBJ, obj)
   
     def update(self, dt):
         pass
@@ -32,13 +39,14 @@ class World(object):
         pass
   
     def clearStaticObjects(self):
-        pass
+        self.staticOBJ = {}
   
     def clearDynamicObjects(self):
-        pass
+        self.dynamicOBJ = {}
   
     def clear(self):
-        pass
+        self.clearStaticObjects()
+        self.clearDynamicObjects()
   
     def render(self, screen):
         pass
