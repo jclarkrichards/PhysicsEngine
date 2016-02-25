@@ -1,3 +1,5 @@
+"""Instantaneous change in velocity"""
+
 class Impulse(object):
 
 
