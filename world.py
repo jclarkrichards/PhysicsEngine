@@ -7,6 +7,7 @@ class World(object):
         if obj.ID in database.keys():
              return
         if len(database) == 0:
+            obj.ID = 0
             database[0] = obj
             return
         newID = max(database.keys()) + 1
@@ -33,7 +34,10 @@ class World(object):
         self.__removeObject__(self.dynamicOBJ, obj)
   
     def update(self, dt):
-        pass
+        for item in self.staticOBJ.values():
+            item.update(dt)
+        for item in self.dynamicOBJ.values():
+            item.update(dt)
   
     def integrateObjects(self, dt):
         pass
@@ -49,4 +53,7 @@ class World(object):
         self.clearDynamicObjects()
   
     def render(self, screen):
-        pass
+        for item in self.staticOBJ.values():
+            item.render(screen)
+        for item in self.dynamicOBJ.values():
+            item.render(screen)
