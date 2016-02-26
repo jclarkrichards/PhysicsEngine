@@ -7,11 +7,11 @@ class World(object):
         if obj.ID in database.keys():
              return
         if len(database) == 0:
-            obj.ID = 0
+            obj.setID(0)
             database[0] = obj
             return
         newID = max(database.keys()) + 1
-        obj.ID = newID
+        obj.setID(newID)
         database[newID] = obj
      
     def addStaticObject(self, obj):
