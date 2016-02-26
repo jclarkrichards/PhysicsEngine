@@ -1,7 +1,10 @@
+from collisionResolver import EntityCollisionResolver
+
 class World(object):
     def __init__(self):
         self.staticOBJ = {}
         self.dynamicOBJ = {}
+        self.collisionResolver = EntityCollisionResolver()
     
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -58,7 +61,11 @@ class World(object):
         return pairs
         
     def resolveCollisions(self, dt):
-        pass
+        '''Loop through the possible collision pairs and check for collisions'''
+        pairs = self.setContactingPairs()
+        for pair in pairs:
+            self.collisionResolver.setEntities(pair)
+            self.collisionResolver.resolve(dt)
   
     def clearStaticObjects(self):
         self.staticOBJ = {}
