@@ -13,11 +13,13 @@ background = pygame.surface.Surface(SCREENSIZE).convert()
 background.fill((0,0,0))
 clock = pygame.time.Clock()
 
-particle = Particle(40, 100)
+particle = Entity(40, 100)
+particle.setSize(16,16)
 particle.setMass(20)
-particle.setVelocity(40,-100)
+particle.setVelocity(60,-100)
 
-particle2 = Particle(440, 100)
+particle2 = Entity(440, 100)
+particle2.setSize(32,32)
 particle2.setMass(40)
 particle2.setVelocity(-40,-100)
 
