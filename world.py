@@ -64,7 +64,7 @@ class World(object):
         '''Loop through the possible collision pairs and check for collisions'''
         pairs = self.setContactingPairs()
         for pair in pairs:
-            self.collisionResolver.setEntities(pair)
+            self.collisionResolver.setEntityPair(*pair)
             self.collisionResolver.resolve(dt)
   
     def clearStaticObjects(self):
