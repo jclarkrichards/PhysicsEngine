@@ -52,12 +52,24 @@ class EntityContacts(object):
         pass
     
     def resolvePenetration(self, dt):
-        '''Separate objects so no longer penetrating.  Depends on objects shape.  Assume rectangles for now.'''
-        velocity = -self.entities[0].velocity
-        velocityNorm = velocity.normalize()
-        velocityFinal = Vector2D(velocityNorm.x*self.penetrateX, 
-                                 velocityNorm.y*self.penetrateY)
-        self.entities[0].position += self.velocityFinal*dt
+        '''Separate objects so no longer penetrating.  Depends on objects shape.  Assume rectangles for now.  
+        Also assumes entities[1] is static.'''
+        previousPosition = self.entities[0].position - self.entities[0].velocity*dt
+        xValues = (previousPosition.x, self.entities[1].position.x, self.entities[0].w, self.entities[1].w]
+        xOverlap, dx = self.axisOverlap(*xValues)
+        #if xoverlap, assume y is the separating axis
+        if xOverlap:
+            if self.entities[0].position.y < self.entities[1].position.y:
+                self.entities[0].position.y = self.entities[1].position.y - self.entities[0].height
+            elif self.entities[0].position.y > self.entities[1].position.y:
+                self.entities[0].position.y = self.entities[1].position.y + self.entities[1].height
+        else: #assume x was the separating axis
+            if self.entities[0].position.x < self.entities[1].position.x:
+                self.entities[0].position.x = self.entities[1].position.x - self.entities[0].width
+            elif self.entities[0].position.x > self.entities[1].position.x:
+                self.entities[0].position.x = self.entities[1].position.x + self.entities[1].width
+        
+    
     
     def calculateSeparatingVelocity(self):
         pass
