@@ -39,7 +39,7 @@ while True:
     #gravity.updateForce(particle)
     #particle.update(dt)
     #particle2.update(dt)
-    world.update(dt)
+    world.integrateObjects(dt)
     screen.blit(background, (0,0))
     #particle.render(screen)
     #particle2.render(screen)
