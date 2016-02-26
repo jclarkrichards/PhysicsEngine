@@ -1,6 +1,6 @@
 from vectors import Vector2D
 
-class EntityContacts(object):
+class EntityCollisionResolver(object):
     def __init__(self):
         self.entities = [None, None]
         #self.restitution = 0
