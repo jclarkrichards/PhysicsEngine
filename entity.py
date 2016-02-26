@@ -37,6 +37,6 @@ class Entity(object):
         self.Fnet += force
         
     def render(self, screen):
-        vals = list(self.position.toTuple()) + [16,16]
+        vals = list(self.position.toTuple()) + [self.w, self.h]
         pygame.draw.rect(screen, (200,0,0), vals)
     
