@@ -41,6 +41,20 @@ class World(object):
   
     def integrateObjects(self, dt):
         pass
+    
+    def setContactingPairs(self):
+        '''Find all possible pairing combinations of static and dynamic objects'''
+        pairs = []
+        if len(self.staticOBJ) > 0:
+            for item1 in self.dynamicOBJ.values():
+                for item2 in self.staticOBJ.values():
+                    pairs.append((item1, item2))
+        dynamics = self.dynamicOBJ.values()
+        for i, item in enumerate(dynamics):
+            subset = dynamics[i+1:]
+            for sub in subset:
+                pairs.append((item, sub))
+        return pairs
   
     def clearStaticObjects(self):
         self.staticOBJ = {}
