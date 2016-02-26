@@ -40,7 +40,8 @@ class World(object):
             item.update(dt)
   
     def integrateObjects(self, dt):
-        pass
+        self.update(dt)
+        self.resolveCollisions(dt)
     
     def setContactingPairs(self):
         '''Find all possible pairing combinations of static and dynamic objects'''
@@ -55,6 +56,9 @@ class World(object):
             for sub in subset:
                 pairs.append((item, sub))
         return pairs
+        
+    def resolveCollisions(self, dt):
+        pass
   
     def clearStaticObjects(self):
         self.staticOBJ = {}
