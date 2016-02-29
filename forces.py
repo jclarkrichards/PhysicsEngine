@@ -14,8 +14,8 @@ class Gravity(Force):
         self.gravity = Vector2D(0, 100)
     
     def updateForce(self, entity, dt=0):
-        if entity.invMass != 0:
-            entity.addForce(self.gravity*entity.mass)
+        #if entity.invMass != 0:
+        entity.addForce(self.gravity) #*entity.mass)
 
 
 class Drag(Force):

@@ -22,13 +22,13 @@ class EntityCollisionResolver(object):
         colliding = self.calculateSeparatingAxes()
         return colliding
     
-    def calculateSepartingAxes(self):
+    def calculateSeparatingAxes(self):
         '''separting axis theorem for rectangles.  Need to include circles as well in the future'''
         xOverlap, yOverlap = (False, False)
-        xValues = (self.entities[0].position.x, self.entities[1].position.x, self.entities[0].w, self.entities[1].w]
+        xValues = (self.entities[0].position.x, self.entities[1].position.x, self.entities[0].w, self.entities[1].w)
         xOverlap = self.axisOverlap(*xValues)
         if xOverlap:
-            yValues = (self.entities[0].position.y, self.entities[1].position.y, self.entities[0].h, self.entities[1].h]
+            yValues = (self.entities[0].position.y, self.entities[1].position.y, self.entities[0].h, self.entities[1].h)
             yOverlap = self.axisOverlap(*yValues)
         return xOverlap & yOverlap
         
@@ -52,25 +52,36 @@ class EntityCollisionResolver(object):
         pass
     
     def resolveCollision(self, dt):
-        '''Separate objects so no longer penetrating.  Depends on objects shape.  Assume rectangles for now.  
+        '''Separate objects so no longer penetrating.  
+        Depends on objects shape.  Assume rectangles for now.  
         Also assumes entities[1] is static.'''
         #Right before collision there was at least one separating axis
-        previousPosition = self.entities[0].position - self.entities[0].velocity*dt
-        xValues = (previousPosition.x, self.entities[1].position.x, self.entities[0].w, self.entities[1].w]
-        xOverlap, dx = self.axisOverlap(*xValues)
+        previousPosition = self.entities[0].position - \
+                           self.entities[0].velocity*dt
+        xValues = (previousPosition.x, self.entities[1].position.x,
+                   self.entities[0].w, self.entities[1].w)
+        #print previousPosition, xValues
+        xOverlap = self.axisOverlap(*xValues)
         #if xoverlap, assume y is the separating axis
         if xOverlap:
             if self.entities[0].position.y < self.entities[1].position.y:
-                self.entities[0].position.y = self.entities[1].position.y - self.entities[0].height
+                self.entities[0].position.y = self.entities[1].position.y - \
+                                              self.entities[0].h
+                #self.entities[0].velocity = Vector2D(self.entities[0].velocity.x, 0)
             elif self.entities[0].position.y > self.entities[1].position.y:
-                self.entities[0].position.y = self.entities[1].position.y + self.entities[1].height
+                self.entities[0].position.y = self.entities[1].position.y + \
+                                              self.entities[1].h
+            self.entities[0].velocity = Vector2D(self.entities[0].velocity.x, 0)
         else: #assume x was the separating axis
             if self.entities[0].position.x < self.entities[1].position.x:
-                self.entities[0].position.x = self.entities[1].position.x - self.entities[0].width
+                self.entities[0].position.x = self.entities[1].position.x - \
+                                              self.entities[0].w
             elif self.entities[0].position.x > self.entities[1].position.x:
-                self.entities[0].position.x = self.entities[1].position.x + self.entities[1].width
-        
+                self.entities[0].position.x = self.entities[1].position.x + \
+                                              self.entities[1].w
+            self.entities[0].velocity = Vector2D(0, self.entities[0].velocity.y)
     
+
     
     def calculateSeparatingVelocity(self):
         pass

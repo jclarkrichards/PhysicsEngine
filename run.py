@@ -24,13 +24,15 @@ particle2.setMass(40)
 particle2.setVelocity(-40,-100)
 
 #Set a static floor object
-floor = Entity(0,380)
-floor.setSize(600, 30)
-
+floor = Entity(0,250)
+floor.setSize(550, 60)
+floor2 = Entity(350,200)
+floor2.setSize(30,50)
 world = World()
 world.addDynamicObject(particle)
 world.addDynamicObject(particle2)
 world.addStaticObject(floor)
+world.addStaticObject(floor2)
 
 #gravity = Gravity()
 registry = ForceRegistry()
@@ -52,4 +54,5 @@ while True:
     #particle.render(screen)
     #particle2.render(screen)
     world.render(screen)
+    print particle.position, particle.velocity, particle.acceleration
     pygame.display.update()

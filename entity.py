@@ -14,7 +14,7 @@ class Entity(object):
         
     def update(self, dt):
         self.position += self.velocity*dt
-        self.acceleration = self.Fnet*self.invMass
+        self.acceleration = self.Fnet #*self.invMass
         self.velocity += self.acceleration*dt
         self.Fnet = Vector2D()
     
