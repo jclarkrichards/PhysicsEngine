@@ -49,30 +49,63 @@ class EntityCollisionResolver(object):
         Depends on objects shape.  Assume rectangles for now.  
         Also assumes entity2 is static.'''
         #Right before collision there was at least one separating axis
-        #Get the previous position of entity1
-        pp = self.entity1.position - self.entity1.velocity*dt
+        #Get the previous position of entity1 and entity2
+        #for stationary objects pp2 == entity2.position
+        pp1 = self.entity1.position - self.entity1.velocity*dt
+        pp2 = self.entity2.position - self.entity2.velocity*dt
         
         #if y is the separating axis
-        if yAxisGap(pp, self.entity2.position):
+        if yAxisGap(pp1, pp2):
+            if self.entity2.position.y > (self.entity1.y+self.entity1.h):
+                gap = self.entity2.position.y - (self.entity1.y+self.entity.h)
+                if pp2 == self.entity2.position: #entity2 was stationary during collision
+                    self.entity1.position.y = pp1 + gap
+                else:
+                    self.entity1.position.y = pp1.y + gap/2.0
+                    self.entity2.position.y = pp2.y - gap/2.0
+            if self.entity1.position.y > (self.entity2.y+self.entity2.h):
+                gap = self.entity1.position.y - (self.entity2.y+self.entity2.h)
+                if pp2 == self.entity2.position: #entity2 was stationary during collision
+                    self.entity1.position.y = pp1 - gap
+                else:
+                    self.entity1.position.y = pp1 - gap/2.0
+                    self.entity2.position.y = pp2 + gap/2.0
             #Entity1 above entity2
-            if self.entity1.position.y < self.entity2.position.y:
-                self.entity1.position.y = self.entity2.position.y - \
-                                              self.entity1.h
+            #if self.entity1.position.y < self.entity2.position.y:
+            #    self.entity1.position.y = self.entity2.position.y - \
+            #                                  self.entity1.h
                                             
             #Entity1 below entity2  
-            elif self.entity1.position.y > self.entity2.position.y:
-                self.entity1.position.y = self.entity2.position.y + \
-                                              self.entity2.h
+            #elif self.entity1.position.y > self.entity2.position.y:
+            #    self.entity1.position.y = self.entity2.position.y + \
+            #                                  self.entity2.h
             self.entity1.velocity.y = 0.0
             
         else: #assume x was the separating axis
-            if self.entity1.position.x < self.entity2.position.x:
-                self.entity1.position.x = self.entity2.position.x - \
-                                              self.entity1.w
-            elif self.entity1.position.x > self.entity2.position.x:
-                self.entity1.position.x = self.entity2.position.x + \
-                                              self.entity2.w
-            self.entity1.velocity.x *= -1
+            if self.entity2.position.x > (self.entity1.x+self.entity1.w):
+                gap = self.entity2.position.x - (self.entity1.x+self.entity.w)
+                if pp2 == self.entity2.position: #entity2 was stationary during collision
+                    self.entity1.position.x = pp1 + gap
+                else:
+                    self.entity1.position.x = pp1.x + gap/2.0
+                    self.entity2.position.x = pp2.x - gap/2.0
+            if self.entity1.position.x > (self.entity2.x+self.entity2.w):
+                gap = self.entity1.position.x - (self.entity2.x+self.entity2.w)
+                if pp2 == self.entity2.position: #entity2 was stationary during collision
+                    self.entity1.position.x = pp1 - gap
+                else:
+                    self.entity1.position.x = pp1 - gap/2.0
+                    self.entity2.position.x = pp2 + gap/2.0
+            
+            #else:
+                
+            #if self.entity1.position.x < self.entity2.position.x:
+            #    self.entity1.position.x = self.entity2.position.x - \
+            #                                  self.entity1.w
+            #elif self.entity1.position.x > self.entity2.position.x:
+            #    self.entity1.position.x = self.entity2.position.x + \
+            #                                  self.entity2.w
+            self.entity1.velocity.x *= -1  #move in opposite direction
             
     
 
