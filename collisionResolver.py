@@ -79,6 +79,7 @@ class EntityCollisionResolver(object):
             #elif self.entity1.position.y > self.entity2.position.y:
             #    self.entity1.position.y = self.entity2.position.y + \
             #                                  self.entity2.h
+            #should be an impulse aka instantaneous change in velocity
             self.entity1.velocity.y = 0.0
             
         else: #assume x was the separating axis
@@ -105,6 +106,7 @@ class EntityCollisionResolver(object):
             #elif self.entity1.position.x > self.entity2.position.x:
             #    self.entity1.position.x = self.entity2.position.x + \
             #                                  self.entity2.w
+            #should be an impulse aka instantaneous change in velocity
             self.entity1.velocity.x *= -1  #move in opposite direction
             
     
