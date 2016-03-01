@@ -18,11 +18,17 @@ class Entity(object):
         
     def update(self, dt):
         #self.position += self.velocity*dt
-        self.min += self.velocity.dt
-        self.max = self.min + self.size
+        self.updatePosition(vector=self.velocity*dt)
         self.acceleration = self.Fnet #*self.invMass
         self.velocity += self.acceleration*dt
         self.Fnet = Vector2D()
+        
+    def updatePosition(self, vector=None, dx=0, dy=0):
+        if vector:
+            self.min += vector
+        else:
+            self.min += Vector2D(dx, dy)
+        self.max = self.min + self.size
     
     def setSize(self, width, height):
         self.size = Vector2D(width, height)
