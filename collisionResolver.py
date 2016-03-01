@@ -40,18 +40,10 @@ class EntityCollisionResolver(object):
         return b.min.y >= a.max.y or a.min.y >= b.max.y
         
     def getXOverlap(self, a, b):
-        if b.min.x >= a.max.x:
-            return b.min.x - a.max.x
-        elif aMin.x >= bMax.x:
-            return a.min.x - b.max.x
-        return None
+        return min(a.max.x-b.min.x, b.max.x-a.min.x, a.max.x-a.min.x, b.max.x-b.min.x)
         
     def getYOverlap(self, a, b):
-        if b.min.y >= a.max.y:
-            return b.min.y - a.max.y
-        elif a.min.y >= b.max.y:
-            return a.min.y - b.max.y
-        return None
+        return min(a.max.y-b.min.y, b.max.y-a.min.y, a.max.y-a.min.y, b.max.y-b.min.y)
     '''
     def getXAxisGap(self, aMin, aMax, bMin, bMax):
         gap = 0
@@ -77,12 +69,22 @@ class EntityCollisionResolver(object):
         #Get the previous position of entity1 and entity2
         xOverlap = self.getXOverlap(self.entity1, self.entity2)
         yOverlap = self.getYOverlap(self.entity1, self.entity2)
-        if xOverlap > yOverlap:
-            self.entity1.min.y += gap
-            self.entity1.max = self.entity1.min + self.size
+        if yOverlap < xOverlap:
+            if self.entity1.y > self.entity2.y:
+                self.entity1.updatePosition(0, yOverlap*-1)
+            else:
+                self.entity1.updatePosition(0, yOverlap)
+            #self.entity1.min.y += yOverlap
+            #self.entity1.max = self.entity1.min + self.size
         elif xOverlap < yOverlap:
-            self.entity1.min.x += gap
-            self.entity1.max = self.entity1.min + self.size
+            if self.entity1.x > self.entity2.x:
+                self.entity1.updatePosition(xOverlap, 0)
+            else:
+                self.entity1.updatePosition(xOverlap*-1, 0)
+            #self.entity1.min.x += xOverlap
+            #self.entity1.max = self.entity1.min + self.size
+        else:
+            pass
         
         '''
         pp1Min = self.entity1.min - self.entity1.velocity*dt
