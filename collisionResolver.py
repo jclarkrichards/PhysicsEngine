@@ -33,17 +33,31 @@ class EntityCollisionResolver(object):
 #------------------------------------------------------------------------------        
     def xAxisGap(self, pos1, pos2):
         '''Returns True if there is a gap'''
-        check1 = (pos1.x + self.entity1.w) <= pos2.x
+        check1 = pos2.x >= (pos1.x + self.entity1.w)
         check2 = pos1.x >= (pos2.x + self.entity2.w)
         return check1 or check2
         
     def yAxisGap(self, pos1, pos2):
-        check1 = (pos1.y + self.entity1.h) <= pos2.y
+        check1 = pos2.y >= (pos1.y + self.entity1.h)
         check2 = pos1.y >= (pos2.y + self.entity2.h)
         return check1 or check2
     
-    def resolveVelocity(self, dt):
-        pass
+    def getXAxisGap(self, pos1, pos2):
+        '''Returns True if there is a gap'''
+        gap = 0
+        if pos2.x >= (pos1.x + self.entity1.w):
+            gap = pos2.x - (pos1.x + self.entity1.w) 
+        elif pos1.x >= (pos2.x + self.entity2.w):
+            gap = pos1.x - (pos2.x + self.entity2.w)
+        return gap
+        
+    def getYAxisGap(self, pos1, pos2):
+        gap = 0
+        if pos2.y >= (pos1.y + self.entity1.h):
+            gap = pos2.y - (pos1.y + self.entity1.h)
+        elif pos1.y >= (pos2.y + self.entity2.h):
+            gap = pos1.y - (pos2.y + self.entity2.h)
+        return gap
     
     def resolveCollision(self, dt):
         '''Separate objects so no longer penetrating.  
@@ -54,6 +68,8 @@ class EntityCollisionResolver(object):
         #for stationary objects pp2 == entity2.position
         pp1 = self.entity1.position - self.entity1.velocity*dt
         pp2 = self.entity2.position - self.entity2.velocity*dt
+        xgap = self.getXAxisGap(pp1, pp2)
+        ygap = self.getYAxisGap(pp1, pp2)
         #xgap1, xgap2, ygap1, ygap2 = (0,0,0,0)
         #print "YGAP"
         #if pp2.y > (pp1.y+self.entity1.h):
