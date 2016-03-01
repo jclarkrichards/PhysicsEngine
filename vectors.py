@@ -18,6 +18,10 @@ class Vector2D(object):
     def toTuple(self):
         '''Returns the vector as a tuple'''
         return (self.x, self.y)
+        
+    def toList(self):
+        '''Returns the vector as a list'''
+        return [self.x, self.y]
 
     @staticmethod
     def deg_to_rad(degree):
