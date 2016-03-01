@@ -4,6 +4,9 @@ from vectors import Vector2D
 class Entity(object):
     def __init__(self, x, y):
         self.ID = None
+        self.min = Vector2D(x, y)
+        self.max = Vector2D()
+        
         self.position = Vector2D(x, y)
         self.velocity = Vector2D()
         self.acceleration = Vector2D()
@@ -19,6 +22,8 @@ class Entity(object):
         self.Fnet = Vector2D()
     
     def setSize(self, width, height):
+        self.max = Vector2D(width, height)
+        
         self.w = width
         self.h = height
         
