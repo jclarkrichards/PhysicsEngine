@@ -25,51 +25,74 @@ class EntityCollisionResolver(object):
     def calculateSeparatingAxes(self):
         '''separting axis theorem for rectangles.  
         Need to include circles as well in the future'''
-        if self.xAxisGap(self.entity1.position, self.entity2.position):
+        if self.xAxisGap(self.entity1, self.entity2):
             return False
-        if self.yAxisGap(self.entity1.position, self.entity2.position):
+        if self.yAxisGap(self.entity1, self.entity2):
             return False
         return True
 #------------------------------------------------------------------------------        
-    def xAxisGap(self, pos1, pos2):
-        '''Returns True if there is a gap'''
-        check1 = pos2.x >= (pos1.x + self.entity1.w)
-        check2 = pos1.x >= (pos2.x + self.entity2.w)
-        return check1 or check2
+    def xAxisGap(self, a, b):
+        '''Returns True if there is a gap, False if overlap'''
+        return b.min.x >= a.max.x or a.min.x >= b.max.x
         
-    def yAxisGap(self, pos1, pos2):
-        check1 = pos2.y >= (pos1.y + self.entity1.h)
-        check2 = pos1.y >= (pos2.y + self.entity2.h)
-        return check1 or check2
-    
-    def getXAxisGap(self, pos1, pos2):
-        '''Returns True if there is a gap'''
+    def yAxisGap(self, a, b):
+        '''Returns True if there is a gap, False if overlap'''
+        return b.min.y >= a.max.y or a.min.y >= b.max.y
+        
+    def getXOverlap(self, a, b):
+        if b.min.x >= a.max.x:
+            return b.min.x - a.max.x
+        elif aMin.x >= bMax.x:
+            return a.min.x - b.max.x
+        return None
+        
+    def getYOverlap(self, a, b):
+        if b.min.y >= a.max.y:
+            return b.min.y - a.max.y
+        elif a.min.y >= b.max.y:
+            return a.min.y - b.max.y
+        return None
+    '''
+    def getXAxisGap(self, aMin, aMax, bMin, bMax):
         gap = 0
-        if pos2.x >= (pos1.x + self.entity1.w):
-            gap = pos2.x - (pos1.x + self.entity1.w) 
-        elif pos1.x >= (pos2.x + self.entity2.w):
-            gap = pos1.x - (pos2.x + self.entity2.w)
+        if bMin.x >= aMax.x:
+            gap = bMin.x - aMax.x
+        elif aMin.x >= bMax.x:
+            gap = aMin.x - bMax.x
         return gap
         
-    def getYAxisGap(self, pos1, pos2):
+    def getYAxisGap(self, aMin, aMax, bMin, bMax):
         gap = 0
-        if pos2.y >= (pos1.y + self.entity1.h):
-            gap = pos2.y - (pos1.y + self.entity1.h)
-        elif pos1.y >= (pos2.y + self.entity2.h):
-            gap = pos1.y - (pos2.y + self.entity2.h)
+        if bMin.y >= aMax.y:
+            gap = bMin.y - aMax.y
+        elif aMin.y >= bMax.y:
+            gap = aMin.y - bMax.y
         return gap
-    
+    '''
     def resolveCollision(self, dt):
         '''Separate objects so no longer penetrating.  
         Depends on objects shape.  Assume rectangles for now.  
         Also assumes entity2 is static.'''
         #Right before collision there was at least one separating axis
         #Get the previous position of entity1 and entity2
-        #for stationary objects pp2 == entity2.position
-        pp1 = self.entity1.position - self.entity1.velocity*dt
-        pp2 = self.entity2.position - self.entity2.velocity*dt
-        xgap = self.getXAxisGap(pp1, pp2)
-        ygap = self.getYAxisGap(pp1, pp2)
+        xOverlap = self.getXOverlap(self.entity1, self.entity2)
+        yOverlap = self.getYOverlap(self.entity1, self.entity2)
+        if xOverlap > yOverlap:
+            self.entity1.min.y += gap
+            self.entity1.max = self.entity1.min + self.size
+        elif xOverlap < yOverlap:
+            self.entity1.min.x += gap
+            self.entity1.max = self.entity1.min + self.size
+        
+        '''
+        pp1Min = self.entity1.min - self.entity1.velocity*dt
+        pp2Min = self.entity2.min - self.entity2.velocity*dt
+        pp1Max = pp1Min + self.entity1.size
+        pp2Max = pp2Min + self.entity2.size
+        vals = (pp1Min, pp1Max, pp2Min, pp2Max)
+        xgap = self.getXAxisGap(*vals)
+        ygap = self.getYAxisGap(*vals)
+        
         #xgap1, xgap2, ygap1, ygap2 = (0,0,0,0)
         #print "YGAP"
         #if pp2.y > (pp1.y+self.entity1.h):
@@ -191,7 +214,7 @@ class EntityCollisionResolver(object):
                     #self.entity1.velocity.x *= -1
                     #self.entity2.velocity.x *= -1
             #self.entity1.velocity.x *= -1  #move in opposite direction
-            
+            '''
     
 
     
