@@ -63,9 +63,12 @@ class World(object):
     def resolveCollisions(self, dt):
         '''Loop through the possible collision pairs and check for collisions'''
         pairs = self.setContactingPairs()
-        for pair in pairs:
+        #pairs, overlap = self.sortPairsByCollisionArea(pairs)
+        for i, pair in enumerate(pairs):
             self.collisionResolver.setEntityPair(*pair)
+            #self.collisionResolver.setOverlaps(*overlap)
             self.collisionResolver.resolve(dt)
+            
   
     def clearStaticObjects(self):
         self.staticOBJ = {}
