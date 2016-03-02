@@ -48,7 +48,7 @@ class World(object):
     
     def setContactingPairs(self):
         '''Find all possible pairing combinations of static and dynamic objects'''
-        pairs = []
+        #pairs = []
         if len(self.staticOBJ) > 0:
             for item1 in self.dynamicOBJ.values():
                 for item2 in self.staticOBJ.values():
@@ -57,17 +57,20 @@ class World(object):
         for i, item in enumerate(dynamics):
             subset = dynamics[i+1:]
             for sub in subset:
-                pairs.append((item, sub))
-        return pairs
+                self.collisionResolver.addPair((item, sub))
+                #pairs.append((item, sub))
+        #return pairs
         
     def resolveCollisions(self, dt):
         '''Loop through the possible collision pairs and check for collisions'''
-        pairs = self.setContactingPairs()
+        #pairs = self.setContactingPairs()
+        self.setContactingPairs()
+        self.collisionResolver.resolve()
         #pairs, overlap = self.sortPairsByCollisionArea(pairs)
-        for i, pair in enumerate(pairs):
-            self.collisionResolver.setEntityPair(*pair)
+        #for i, pair in enumerate(pairs):
+        #    self.collisionResolver.setEntityPair(*pair)
             #self.collisionResolver.setOverlaps(*overlap)
-            self.collisionResolver.resolve(dt)
+        #    self.collisionResolver.resolve(dt)
             
   
     def clearStaticObjects(self):
