@@ -4,13 +4,20 @@ from vectors import Vector2D
 class EntityCollisionResolver(object):
     def __init__(self):
         self.entity1, self.entity2 = (None, None)
+        self.xOverlap, self.yOverlap = (0.0, 0.0)
         #self.restitution = 0
         #self.contactNormal = Vector2D()
         #self.penetration = 0
         #self.penetrateX, self.penetrateY = (0,0)
     
     def setEntityPair(self, entity1, entity2):
+        '''Set the entity pair to be used for collision resolution'''
         self.entity1, self.entity2 = (entity1, entity2)
+        
+    def setOverlaps(self, x, y):
+        '''Set the overlaps of entities if found previously'''
+        self.xOverlap = x
+        self.yOverlap = y
      
     def resolve(self, dt):
         colliding = self.calculateCollision()
