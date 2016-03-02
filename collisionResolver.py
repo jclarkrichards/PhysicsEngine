@@ -6,12 +6,16 @@ class EntityCollisionResolver(object):
         self.entity1, self.entity2 = (None, None)
         self.xOverlap, self.yOverlap = (0.0, 0.0)
         self.pairs = []
-        self.pairDict = {}
+        
         #self.restitution = 0
         #self.contactNormal = Vector2D()
         #self.penetration = 0
         #self.penetrateX, self.penetrateY = (0,0)
     
+    def addPair(self, pair):
+        '''Add an entity pair'''
+        self.pairs.append(pair)
+        
     def setEntityPair(self, entity1, entity2):
         '''Set the entity pair to be used for collision resolution'''
         self.entity1, self.entity2 = (entity1, entity2)
@@ -22,8 +26,17 @@ class EntityCollisionResolver(object):
         self.yOverlap = y
      
     def resolve(self, dt):
-        colliding = self.calculateCollision()
-        if colliding:
+        pairDict = {}
+        for pair in self.pairs:
+            self.setEntityPair(*pair)
+            colliding = self.calculateCollision()
+            if colliding:
+                pairDict[pair] = self.getOverlapArea()
+                #self.resolveCollision(dt)
+        pairSorted = sorted(pairDict.items(), key=lambda x: x[1], reverse=True)
+        self.pairs = [k[0] for k in pairSorted]
+        for pair in self.pairs:
+            self.setEntityPair(*pair)
             self.resolveCollision(dt)
     
     def calculateCollision(self):
@@ -48,6 +61,7 @@ class EntityCollisionResolver(object):
         '''Returns True if there is a gap, False if overlap'''
         return b.min.y >= a.max.y or a.min.y >= b.max.y
         
+    #Assuming there's an overlap detected already
     def getXOverlap(self, a, b):
         return min(a.max.x-b.min.x, b.max.x-a.min.x, a.max.x-a.min.x, b.max.x-b.min.x)
         
@@ -212,13 +226,15 @@ class EntityCollisionResolver(object):
 
     def sortPairsByCollisionArea(self, pairs):
         '''Larger collision areas go first.  Assumes AABBs for now'''
-        self.pairDict = {}
+        sortedDict = {}
         for pair in self.pairs:
-            xOverlap = self.getXOverlap(self.entity1, self.entity2)
-            yOverlap = self.getYOverlap(self.entity1, self.entity2)
-            area = xOverlap * yOverlap
-            if area > 0:
-                self.pairDict[pair] = area
+            pass
+            
+                
+    def getOverlapArea(self):
+        xOverlap = self.getXOverlap(self.entity1, self.entity2)
+        yOverlap = self.getYOverlap(self.entity1, self.entity2)
+        return xOverlap * yOverlap
         
         
             
