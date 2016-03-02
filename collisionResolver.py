@@ -44,23 +44,7 @@ class EntityCollisionResolver(object):
         
     def getYOverlap(self, a, b):
         return min(a.max.y-b.min.y, b.max.y-a.min.y, a.max.y-a.min.y, b.max.y-b.min.y)
-    '''
-    def getXAxisGap(self, aMin, aMax, bMin, bMax):
-        gap = 0
-        if bMin.x >= aMax.x:
-            gap = bMin.x - aMax.x
-        elif aMin.x >= bMax.x:
-            gap = aMin.x - bMax.x
-        return gap
-        
-    def getYAxisGap(self, aMin, aMax, bMin, bMax):
-        gap = 0
-        if bMin.y >= aMax.y:
-            gap = bMin.y - aMax.y
-        elif aMin.y >= bMax.y:
-            gap = aMin.y - bMax.y
-        return gap
-    '''
+    
     def resolveCollision(self, dt):
         '''Separate objects so no longer penetrating.  
         Depends on objects shape.  Assume rectangles for now.  
@@ -70,24 +54,19 @@ class EntityCollisionResolver(object):
         xOverlap = self.getXOverlap(self.entity1, self.entity2)
         yOverlap = self.getYOverlap(self.entity1, self.entity2)
         if yOverlap < xOverlap:
-            print yOverlap, xOverlap
-            #self.entity1.updatePosition(dy=yOverlap)
-            self.entity1.velocity.y = 0.0
-            
             if self.entity1.min.y > self.entity2.min.y:
-                print "below"
                 self.entity1.updatePosition(dy=yOverlap)
             else:
                 self.entity1.updatePosition(dy=yOverlap*-1)
-            #self.entity1.velocity.y = 0.0
+            self.entity1.velocity.y = 0.0
         elif xOverlap < yOverlap:
             if self.entity1.min.x > self.entity2.min.x:
                 self.entity1.updatePosition(dx=xOverlap)
             else:
                 self.entity1.updatePosition(dx=xOverlap*-1)
             self.entity1.velocity.x *= -1
-        #else:
-        #    pass
+        elif xOverlap == yOverlap:
+            pass
         
         '''
         pp1Min = self.entity1.min - self.entity1.velocity*dt
