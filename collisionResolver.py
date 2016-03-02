@@ -5,6 +5,8 @@ class EntityCollisionResolver(object):
     def __init__(self):
         self.entity1, self.entity2 = (None, None)
         self.xOverlap, self.yOverlap = (0.0, 0.0)
+        self.pairs = []
+        self.pairDict = {}
         #self.restitution = 0
         #self.contactNormal = Vector2D()
         #self.penetration = 0
@@ -208,6 +210,17 @@ class EntityCollisionResolver(object):
             '''
     
 
-    
+    def sortPairsByCollisionArea(self, pairs):
+        '''Larger collision areas go first.  Assumes AABBs for now'''
+        self.pairDict = {}
+        for pair in self.pairs:
+            xOverlap = self.getXOverlap(self.entity1, self.entity2)
+            yOverlap = self.getYOverlap(self.entity1, self.entity2)
+            area = xOverlap * yOverlap
+            if area > 0:
+                self.pairDict[pair] = area
+        
+        
+            
     def calculateSeparatingVelocity(self):
         pass
