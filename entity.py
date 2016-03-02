@@ -51,6 +51,6 @@ class Entity(object):
         self.Fnet += force
         
     def render(self, screen):
-        vals = self.position.toList() + self.size.toList()
+        vals = self.min.toList() + self.size.toList()
         pygame.draw.rect(screen, (200,0,0), vals)
     

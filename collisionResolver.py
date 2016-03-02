@@ -25,19 +25,19 @@ class EntityCollisionResolver(object):
     def calculateSeparatingAxes(self):
         '''separting axis theorem for rectangles.  
         Need to include circles as well in the future'''
-        if b.min.x >= a.max.x or a.min.x >= b.max.x:
+        if self.xAxisGap(self.entity1, self.entity2):
             return False
-        if b.min.y >= a.max.y or a.min.y >= b.max.y:
+        if self.yAxisGap(self.entity1, self.entity2):
             return False
         return True
 #------------------------------------------------------------------------------        
-    #def xAxisGap(self, a, b):
-    #    '''Returns True if there is a gap, False if overlap'''
-    #    return b.min.x >= a.max.x or a.min.x >= b.max.x
+    def xAxisGap(self, a, b):
+        '''Returns True if there is a gap, False if overlap'''
+        return b.min.x >= a.max.x or a.min.x >= b.max.x
         
-    #def yAxisGap(self, a, b):
-    #    '''Returns True if there is a gap, False if overlap'''
-    #    return b.min.y >= a.max.y or a.min.y >= b.max.y
+    def yAxisGap(self, a, b):
+        '''Returns True if there is a gap, False if overlap'''
+        return b.min.y >= a.max.y or a.min.y >= b.max.y
         
     def getXOverlap(self, a, b):
         return min(a.max.x-b.min.x, b.max.x-a.min.x, a.max.x-a.min.x, b.max.x-b.min.x)
@@ -70,19 +70,24 @@ class EntityCollisionResolver(object):
         xOverlap = self.getXOverlap(self.entity1, self.entity2)
         yOverlap = self.getYOverlap(self.entity1, self.entity2)
         if yOverlap < xOverlap:
-            if self.entity1.y > self.entity2.y:
-                self.entity1.updatePosition(dy=yOverlap*-1)
-            else:
-                self.entity1.updatePosition(dy=yOverlap)
+            print yOverlap, xOverlap
+            #self.entity1.updatePosition(dy=yOverlap)
             self.entity1.velocity.y = 0.0
+            
+            if self.entity1.min.y > self.entity2.min.y:
+                print "below"
+                self.entity1.updatePosition(dy=yOverlap)
+            else:
+                self.entity1.updatePosition(dy=yOverlap*-1)
+            #self.entity1.velocity.y = 0.0
         elif xOverlap < yOverlap:
-            if self.entity1.x > self.entity2.x:
+            if self.entity1.min.x > self.entity2.min.x:
                 self.entity1.updatePosition(dx=xOverlap)
             else:
                 self.entity1.updatePosition(dx=xOverlap*-1)
             self.entity1.velocity.x *= -1
-        else:
-            pass
+        #else:
+        #    pass
         
         '''
         pp1Min = self.entity1.min - self.entity1.velocity*dt
