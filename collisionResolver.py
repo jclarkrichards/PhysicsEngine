@@ -76,13 +76,13 @@ class EntityCollisionResolver(object):
         #Get the previous position of entity1 and entity2
         xOverlap = self.getXOverlap(self.entity1, self.entity2)
         yOverlap = self.getYOverlap(self.entity1, self.entity2)
-        if yOverlap < xOverlap:
+        if 0 < yOverlap < xOverlap:
             if self.entity1.min.y > self.entity2.min.y:
                 self.entity1.updatePosition(dy=yOverlap)
             else:
                 self.entity1.updatePosition(dy=yOverlap*-1)
             self.entity1.velocity.y = 0.0
-        elif xOverlap < yOverlap:
+        elif 0 < xOverlap < yOverlap:
             if self.entity1.min.x > self.entity2.min.x:
                 self.entity1.updatePosition(dx=xOverlap)
             else:
@@ -224,11 +224,7 @@ class EntityCollisionResolver(object):
             '''
     
 
-    def sortPairsByCollisionArea(self, pairs):
-        '''Larger collision areas go first.  Assumes AABBs for now'''
-        sortedDict = {}
-        for pair in self.pairs:
-            pass
+    
             
                 
     def getOverlapArea(self):
