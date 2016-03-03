@@ -32,9 +32,9 @@ class EntityCollisionResolver(object):
             colliding = self.calculateCollision()
             if colliding:
                 pairDict[pair] = self.getOverlapArea()
-                #self.resolveCollision(dt)
         pairSorted = sorted(pairDict.items(), key=lambda x: x[1], reverse=True)
         self.pairs = [k[0] for k in pairSorted]
+        #print len(self.pairs)
         for pair in self.pairs:
             self.setEntityPair(*pair)
             self.resolveCollision(dt)
