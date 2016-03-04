@@ -1,3 +1,4 @@
+import pygame
 from collisionResolver import EntityCollisionResolver
 from pygame.locals import *
 
@@ -6,9 +7,21 @@ class World(object):
         self.staticOBJ = {}
         self.dynamicOBJ = {}
         self.collisionResolver = EntityCollisionResolver()
-    
+        self.screenSize = (0, 0)
+        self.screen = None
+        self.background = None
+        
+    def setup(self, x, y):
+        '''Initialize pygame and set the screen size'''
+        pygame.init()
+        self.screen = self.setScreenSize(x, y)
+
+    def setScreenSize(self, screenX, screenY):
+        return pygame.display.set_mode((screenX, screenY), 0, 32)
+        
     def setBackground(self):
-        pass
+        self.background = pygame.surface.Surface(self.screenSize).convert()
+        self.background.fill((0,0,0))
     
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -84,8 +97,9 @@ class World(object):
             if event.type == QUIT:
                 exit()
             
-    def render(self, screen):
+    def render(self):
+        self.screen.blit(self.background, (0,0))
         for item in self.staticOBJ.values():
-            item.render(screen)
+            item.render(self.screen)
         for item in self.dynamicOBJ.values():
-            item.render(screen)
+            item.render(self.screen)
