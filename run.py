@@ -4,13 +4,8 @@ from world import World
 from entity import Entity
 
 world = World()
-world.setup()
+world.setup(600, 400)
 
-SCREENSIZE = (600,400)
-pygame.init()
-screen = pygame.display.set_mode(SCREENSIZE, 0, 32)
-background = pygame.surface.Surface(SCREENSIZE).convert()
-background.fill((0,0,0))
 clock = pygame.time.Clock()
 
 particle = Entity(40, 100)
@@ -38,7 +33,7 @@ floor6 = Entity(360,250)
 floor6.setSize(200,60)
 floor7 = Entity(240,0)
 floor7.setSize(20, 200)
-world = World()
+
 world.addDynamicObject(particle)
 #world.addDynamicObject(particle2)
 world.addStaticObject(floor)
@@ -58,7 +53,5 @@ while True:
     dt = clock.tick(30) / 1000.0
     registry.updateForces(dt)
     world.integrateObjects(dt)
-    screen.blit(background, (0,0))
     world.render(screen)
-  
     pygame.display.update()
