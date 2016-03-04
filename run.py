@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from particle import Particle
+#from particle import Particle
 #from forces import Gravity
 from forceRegistry import ForceRegistry
 from world import World
@@ -55,6 +55,7 @@ registry.addGravity(particle)
 #registry.addGravity(particle2)
 
 while True:
+    world.handleEvents()
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
