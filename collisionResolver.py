@@ -41,7 +41,15 @@ class EntityCollisionResolver(object):
     
     def calculateCollision(self):
         '''Determine which collision detection to use here.  Assume rect to rect for now.'''
-        colliding = self.calculateSeparatingAxes()
+        if self.entity1.radius and self.entity2.radius:
+            pass #circle circle collision
+        elif self.entity1.radius and not self.entity2.radius:
+            pass #circle and rect collision
+        elif not self.entity1.radius and self.entity2.radius:
+            pass #rect and circle collision
+        else:
+            #rect and rect collision
+            colliding = self.calculateSeparatingAxes()
         return colliding
     
     def calculateSeparatingAxes(self):
@@ -74,23 +82,48 @@ class EntityCollisionResolver(object):
         Also assumes entity2 is static.'''
         #Right before collision there was at least one separating axis
         #Get the previous position of entity1 and entity2
-        xOverlap = self.getXOverlap(self.entity1, self.entity2)
-        yOverlap = self.getYOverlap(self.entity1, self.entity2)
+        if self.entity1.radius and self.entity2.radius:
+            #resolve circle circle collision
+            self.resolveCircleCircle(self.entity1, self.entity2, dt)
+        elif self.entity1.radius and not self.entity2.radius:
+            #resolve circle and rect collision
+            self.resolveCircleAABB(self.entity1, self.entity2, dt)
+        elif not self.entity1.radius and self.entity2.radius:
+            #resolve rect and circle collision
+            self.resolveCircleAABB(self.entity2, self.entity1, dt)
+        else:
+            #resolve rect and rect collision
+            self.resolveAABBAABB(self.entity1, self.entity2, dt)
+            
+    def resolveAABBAABB(self, a, b, dt):
+        '''Resolve two rectangles colliding'''
+        xOverlap = self.getXOverlap(a, b)
+        yOverlap = self.getYOverlap(a, b)
         if 0 < yOverlap < xOverlap:
-            if self.entity1.min.y > self.entity2.min.y:
-                self.entity1.updatePosition(dy=yOverlap)
+            if a.min.y > b.min.y:
+                a.updatePosition(dy=yOverlap)
             else:
-                self.entity1.updatePosition(dy=yOverlap*-1)
-            self.entity1.velocity.y = 0.0
+                a.updatePosition(dy=yOverlap*-1)
+            #a.velocity.y = 0.0
+            a.setImpulse(vx=a.velocity.x, vy=0.0)
         elif 0 < xOverlap < yOverlap:
-            if self.entity1.min.x > self.entity2.min.x:
-                self.entity1.updatePosition(dx=xOverlap)
+            if a.min.x > b.min.x:
+                a.updatePosition(dx=xOverlap)
             else:
-                self.entity1.updatePosition(dx=xOverlap*-1)
-            self.entity1.velocity.x *= -1
+                a.updatePosition(dx=xOverlap*-1)
+            #a.velocity.x *= -1
+            a.setImpulse(vx=a.velocity.x*-1, vy=a.velocity.y)
         elif xOverlap == yOverlap:
             pass
         
+    def resolveCircleCircle(self, dt):
+        pass
+    
+    def resolveCircleAABB(self, dt):
+        pass
+    
+    def resolveAABBCircle(self, dt):
+        pass
         '''
         pp1Min = self.entity1.min - self.entity1.velocity*dt
         pp2Min = self.entity2.min - self.entity2.velocity*dt
