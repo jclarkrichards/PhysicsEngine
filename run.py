@@ -1,10 +1,10 @@
 import pygame
-from pygame.locals import *
-#from particle import Particle
-#from forces import Gravity
 from forceRegistry import ForceRegistry
 from world import World
 from entity import Entity
+
+world = World()
+world.setup()
 
 SCREENSIZE = (600,400)
 pygame.init()
@@ -49,26 +49,16 @@ world.addStaticObject(floor5)
 world.addStaticObject(floor6)
 world.addStaticObject(floor7)
 
-#gravity = Gravity()
 registry = ForceRegistry()
 registry.addGravity(particle)
 #registry.addGravity(particle2)
 
 while True:
     world.handleEvents()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            exit()
-            
     dt = clock.tick(30) / 1000.0
     registry.updateForces(dt)
-    #gravity.updateForce(particle)
-    #particle.update(dt)
-    #particle2.update(dt)
     world.integrateObjects(dt)
     screen.blit(background, (0,0))
-    #particle.render(screen)
-    #particle2.render(screen)
     world.render(screen)
-    #print particle.position
+  
     pygame.display.update()
