@@ -1,10 +1,14 @@
 from collisionResolver import EntityCollisionResolver
+from pygame.locals import *
 
 class World(object):
     def __init__(self):
         self.staticOBJ = {}
         self.dynamicOBJ = {}
         self.collisionResolver = EntityCollisionResolver()
+    
+    def setBackground(self):
+        pass
     
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():
@@ -74,6 +78,12 @@ class World(object):
         self.clearStaticObjects()
         self.clearDynamicObjects()
   
+    def handleEvents(self):
+        '''Event handling.  keyboard and/or mouse inputs'''
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                exit()
+            
     def render(self, screen):
         for item in self.staticOBJ.values():
             item.render(screen)
