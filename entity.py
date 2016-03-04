@@ -6,15 +6,17 @@ class Entity(object):
         self.ID = None
         #Position vectors that describe the shape of the box
         self.min = Vector2D(x, y)
-        self.max = Vector2D()
+        self.size = Vector2D()
+        self.max = self.min + self.size
+        self.radius = None
         
         #self.position = Vector2D(x, y)
         self.velocity = Vector2D()
         self.acceleration = Vector2D()
         self.Fnet = Vector2D()
-        self.mass = 0
-        self.invMass = 0
-        self.w, self.h = (0, 0)
+        #self.mass = 0
+        #self.invMass = 0
+        #self.w, self.h = (0, 0)
         
     def update(self, dt):
         #self.position += self.velocity*dt
@@ -30,13 +32,17 @@ class Entity(object):
             self.min += Vector2D(dx, dy)
         self.max = self.min + self.size
     
-    def setSize(self, width, height):
-        self.size = Vector2D(width, height)
-        self.max = self.min + self.size
-        #self.w = width
-        #self.h = height
+    def setSize(self, width, height, radius=None):
+        if radius:
+            self.radius = radius
+            self.size = Vector2D()
+        else:
+            self.size = Vector2D(width, height)
+            self.max = self.min + self.size
+            self.radius = None
         
     def setID(self, identification):
+        '''ID uniquely identifies this entity'''
         self.ID = identification
         
     def setMass(self, mass):
@@ -50,7 +56,16 @@ class Entity(object):
     def addForce(self, force):
         self.Fnet += force
         
+    def addImpulse(self, vx, vy):
+        '''An impulse is an instantaneous change in velocity'''
+        self.velocity = Vector2D(vx, vy)
+        
     def render(self, screen):
-        vals = self.min.toList() + self.size.toList()
-        pygame.draw.rect(screen, (200,0,0), vals)
+        '''Will draw entity as a circle if radius is set'''
+        if self.radius:
+            x, y = self.min.toTuple()
+            pygame.draw.circle(screen, (200,0,0), (int(x), int(y)), self.radius)
+        else:
+            vals = self.min.toList() + self.size.toList()
+            pygame.draw.rect(screen, (200,0,0), vals)
     
