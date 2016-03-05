@@ -105,14 +105,14 @@ class EntityCollisionResolver(object):
             else:
                 a.updatePosition(dy=yOverlap*-1)
             #a.velocity.y = 0.0
-            a.setImpulse(vx=a.velocity.x, vy=0.0)
+            a.addImpulse(vx=a.velocity.x, vy=0.0)
         elif 0 < xOverlap < yOverlap:
             if a.min.x > b.min.x:
                 a.updatePosition(dx=xOverlap)
             else:
                 a.updatePosition(dx=xOverlap*-1)
             #a.velocity.x *= -1
-            a.setImpulse(vx=a.velocity.x*-1, vy=a.velocity.y)
+            a.addImpulse(vx=a.velocity.x*-1, vy=a.velocity.y)
         elif xOverlap == yOverlap:
             pass
         

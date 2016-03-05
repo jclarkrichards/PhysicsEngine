@@ -15,13 +15,15 @@ class World(object):
         '''Initialize pygame and set the screen size'''
         pygame.init()
         self.screen = self.setScreenSize(x, y)
-
+        self.setBackground()
+        
     def setScreenSize(self, screenX, screenY):
-        return pygame.display.set_mode((screenX, screenY), 0, 32)
+        self.screenSize = (screenX, screenY)
+        return pygame.display.set_mode(self.screenSize, 0, 32)
         
     def setBackground(self):
         self.background = pygame.surface.Surface(self.screenSize).convert()
-        self.background.fill((0,0,0))
+        self.background.fill((10,0,60))
     
     def __addObject__(self, database, obj):
         if obj.ID in database.keys():

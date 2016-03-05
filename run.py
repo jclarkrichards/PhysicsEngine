@@ -53,5 +53,5 @@ while True:
     dt = clock.tick(30) / 1000.0
     registry.updateForces(dt)
     world.integrateObjects(dt)
-    world.render(screen)
+    world.render()
     pygame.display.update()
