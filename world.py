@@ -1,3 +1,7 @@
+"""Static objects don't collide among themselves, 
+Dynamic objects collide with themselves and static objects,
+Other objects don't collide with anything"""
+
 import pygame
 from collisionResolver import EntityCollisionResolver
 from pygame.locals import *
@@ -6,6 +10,7 @@ class World(object):
     def __init__(self):
         self.staticOBJ = {}
         self.dynamicOBJ = {}
+        self.otherOBJ = {} 
         self.collisionResolver = EntityCollisionResolver()
         self.screenSize = (0, 0)
         self.screen = None
@@ -41,6 +46,9 @@ class World(object):
   
     def addDynamicObject(self, obj):
         self.__addObject__(self.dynamicOBJ, obj)
+    
+    def addOtherObject(self, obj):
+        self.__addObject__(self.otherOBJ, obj)
         
     def __removeObject__(self, database, obj):
         if obj.ID not in database.keys():
@@ -54,11 +62,16 @@ class World(object):
   
     def removeDynamicObject(self, obj):
         self.__removeObject__(self.dynamicOBJ, obj)
+        
+    def removeOtherObject(self, obj):
+        self.__removeObject__(self.otherOBJ, obj)
   
     def update(self, dt):
         for item in self.staticOBJ.values():
             item.update(dt)
         for item in self.dynamicOBJ.values():
+            item.update(dt)
+        for item in self.otherOBJ.values():
             item.update(dt)
   
     def integrateObjects(self, dt):
@@ -88,10 +101,14 @@ class World(object):
   
     def clearDynamicObjects(self):
         self.dynamicOBJ = {}
+        
+    def clearOtherObjects(self):
+        self.otherOBJ = {}
   
     def clear(self):
         self.clearStaticObjects()
         self.clearDynamicObjects()
+        self.clearOtherObjects()
   
     def handleEvents(self):
         '''Event handling.  keyboard and/or mouse inputs'''
@@ -104,4 +121,6 @@ class World(object):
         for item in self.staticOBJ.values():
             item.render(self.screen)
         for item in self.dynamicOBJ.values():
+            item.render(self.screen)
+        for item in self.otherOBJ.values():
             item.render(self.screen)
