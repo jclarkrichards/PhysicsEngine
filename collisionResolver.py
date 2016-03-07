@@ -16,6 +16,9 @@ class EntityCollisionResolver(object):
         '''Add an entity pair'''
         self.pairs.append(pair)
         
+    def clearPairs(self):
+        self.pairs = []
+        
     def setEntityPair(self, entity1, entity2):
         '''Set the entity pair to be used for collision resolution'''
         self.entity1, self.entity2 = (entity1, entity2)
@@ -38,6 +41,7 @@ class EntityCollisionResolver(object):
         for pair in self.pairs:
             self.setEntityPair(*pair)
             self.resolveCollision(dt)
+        self.clearPairs()
     
     def calculateCollision(self):
         '''Determine which collision detection to use here.  Assume rect to rect for now.'''
