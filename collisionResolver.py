@@ -46,11 +46,11 @@ class EntityCollisionResolver(object):
     def calculateCollision(self):
         '''Determine which collision detection to use here.  Assume rect to rect for now.'''
         if self.entity1.radius and self.entity2.radius:
-            pass #circle circle collision
+            colliding = self.calculateCircleCircleOverlap()
         elif self.entity1.radius and not self.entity2.radius:
-            pass #circle and rect collision
+            colliding = self.calculateCircleAABBOverlap()
         elif not self.entity1.radius and self.entity2.radius:
-            pass #rect and circle collision
+            colliding = self.calculateCircleAABBOverlap()
         else:
             #rect and rect collision
             colliding = self.calculateSeparatingAxes()
@@ -64,6 +64,12 @@ class EntityCollisionResolver(object):
         if self.yAxisGap(self.entity1, self.entity2):
             return False
         return True
+        
+    def calculateCircleCircleOverlap(self):
+        pass
+    
+    def calculateCircleAABBOverlap(self):
+        pass
 #------------------------------------------------------------------------------        
     def xAxisGap(self, a, b):
         '''Returns True if there is a gap, False if overlap'''
