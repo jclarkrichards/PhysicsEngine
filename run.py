@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 particle = Entity(40, 100)
 particle.setSize(16,16)
 particle.setMass(20)
-particle.setVelocity(60,-100)
+particle.setVelocity(80,-100)
 
 particle2 = Entity(440, 100)
 particle2.setSize(32,32)
