@@ -32,7 +32,7 @@ class Entity(object):
             self.min += Vector2D(dx, dy)
         self.max = self.min + self.size
     
-    def setSize(self, width, height, radius=None):
+    def setSize(self, width=0, height=0, radius=None):
         if radius:
             self.radius = radius
             self.size = Vector2D()

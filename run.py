@@ -34,10 +34,10 @@ floor6.setSize(200,60)
 floor7 = Entity(240,0)
 floor7.setSize(20, 200)
 
-other1 = Entity(234, 200)
-other1.setSize(radius=20)
+other1 = Entity(334, 210)
+other1.setSize(radius=40)
 other2 = Entity(23, 20)
-other2.setSize(radius=5)
+other2.setSize(radius=15)
 
 world.addDynamicObject(particle)
 #world.addDynamicObject(particle2)
