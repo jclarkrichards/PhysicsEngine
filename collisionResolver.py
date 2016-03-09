@@ -34,7 +34,10 @@ class EntityCollisionResolver(object):
             self.setEntityPair(*pair)
             colliding = self.calculateCollision()
             if colliding:
-                pairDict[pair] = self.getOverlapArea()
+                if not self.entity1.radius and self.entity2.radius:
+                    pairDict[pair] = self.getOverlapArea() #This is for AABBAABB collision
+                else:
+                    pairDict[pair] = 0 #resolve anything not AABBAABB last
         pairSorted = sorted(pairDict.items(), key=lambda x: x[1], reverse=True)
         self.pairs = [k[0] for k in pairSorted]
         #print len(self.pairs)
@@ -66,7 +69,12 @@ class EntityCollisionResolver(object):
         return True
         
     def calculateCircleCircleOverlap(self):
-        pass
+        vec = self.entity1.position - self.entity2.position
+        distance = vec.magnitudeSquared()
+        thresh = (self.entity1.radius+self.entity2.radius)**2
+        if distance <= thresh:
+            return True
+        return False
     
     def calculateCircleAABBOverlap(self):
         pass
