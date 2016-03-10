@@ -128,6 +128,18 @@ class World(object):
             if event.type == QUIT:
                 exit()
             
+    def cleanUp(self):
+        '''Remove dead objects from the world'''
+        self.dynamicObj = self.cleanupDynamicObjects()
+        
+    def cleanUpDynamicObjects(self):
+        '''Remove dead dynamic objects'''
+        tempDict = {}
+        for item in self.dynamicObj.items():
+            if item.alive:
+                tempDict[item.ID] = item
+        return tempDict
+    
     def render(self):
         self.screen.blit(self.background, (0,0))
         for item in self.staticOBJ.values():
