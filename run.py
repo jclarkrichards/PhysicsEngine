@@ -13,6 +13,7 @@ particle.setSize(16,16)
 particle.setMass(20)
 particle.setVelocity(80,-100)
 
+
 particle2 = Entity(440, 100)
 particle2.setSize(32,32)
 particle2.setMass(40)
@@ -50,6 +51,9 @@ world.addStaticObject(floor6)
 world.addStaticObject(floor7)
 world.addOtherObject(other1)
 world.addOtherObject(other2)
+
+#Get master list of all possible collision pairs
+world.setContactingPairs()
 
 registry = ForceRegistry()
 registry.addGravity(particle)
