@@ -54,7 +54,7 @@ world.addOtherObject(other1)
 world.addOtherObject(other2)
 
 #Get master list of all possible collision pairs
-world.setContactingPairs()
+#world.setContactingPairs()
 
 registry = ForceRegistry()
 registry.addGravity(particle)
