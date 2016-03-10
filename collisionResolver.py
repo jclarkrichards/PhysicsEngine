@@ -39,12 +39,12 @@ class EntityCollisionResolver(object):
                 else:
                     pairDict[pair] = 0 #resolve anything not AABBAABB last
         pairSorted = sorted(pairDict.items(), key=lambda x: x[1], reverse=True)
-        self.pairs = [k[0] for k in pairSorted]
-        #print len(self.pairs)
-        for pair in self.pairs:
+        pairs = [k[0] for k in pairSorted]
+      
+        for pair in pairs:
             self.setEntityPair(*pair)
             self.resolveCollision(dt)
-        self.clearPairs()
+        #self.clearPairs()
     
     def calculateCollision(self):
         '''Determine which collision detection to use here.  Assume rect to rect for now.'''
