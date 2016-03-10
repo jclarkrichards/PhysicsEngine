@@ -115,6 +115,13 @@ class EntityCollisionResolver(object):
             
     def resolveAABBAABB(self, a, b, dt):
         '''Resolve two rectangles colliding'''
+        if self.entity1.isImpenetrable or self.entity2.isImpenetrable:
+            self.separateEntities()
+        self.entity1.collisionAction(self.entity2)
+        self.entity2.collisionAction(self.entity1)
+            
+    def separateEntities(self):
+        '''Separate entities that are not allowed to penetrate'''
         xOverlap = self.getXOverlap(a, b)
         yOverlap = self.getYOverlap(a, b)
         if 0 < yOverlap < xOverlap:
@@ -130,7 +137,7 @@ class EntityCollisionResolver(object):
             else:
                 a.updatePosition(dx=xOverlap*-1)
             #a.velocity.x *= -1
-            a.addImpulse(vx=a.velocity.x*-1, vy=a.velocity.y)
+            #a.addImpulse(vx=a.velocity.x*-1, vy=a.velocity.y)
         elif xOverlap == yOverlap:
             pass
         
