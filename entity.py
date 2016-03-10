@@ -9,7 +9,7 @@ class Entity(object):
         self.size = Vector2D()
         self.max = self.min + self.size
         self.radius = None
-        
+        self.alive = True
         #self.position = Vector2D(x, y)
         self.velocity = Vector2D()
         self.acceleration = Vector2D()
