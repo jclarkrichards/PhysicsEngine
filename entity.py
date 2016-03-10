@@ -62,6 +62,10 @@ class Entity(object):
         '''An impulse is an instantaneous change in velocity'''
         self.velocity = Vector2D(vx, vy)
         
+    def collisionAction(self, entity):
+        '''Set an action on entity if colliding'''
+        pass
+    
     def render(self, screen):
         '''Will draw entity as a circle if radius is set'''
         if self.radius:
