@@ -107,7 +107,7 @@ class World(object):
           
     def resolveCollisions(self, dt):
         '''Loop through the possible pairs and check for collisions'''
-        self.setContactingPairs()
+        #self.setContactingPairs()
         self.collisionResolver.resolve(dt)
    
     def clearStaticObjects(self):
