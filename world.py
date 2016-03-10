@@ -78,6 +78,9 @@ class World(object):
         self.update(dt)
         self.resolveCollisions(dt)
     
+    #Maybe only do this bit once before the game loop.  
+    #Or optimize it to only get pairs that are near each other
+    #Or have this as a master list that's generated once and get subsets of this list
     def setContactingPairs(self):
         '''Find all possible pairings of static and dynamic objects'''
         if len(self.staticOBJ) > 0:
