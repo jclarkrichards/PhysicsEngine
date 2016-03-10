@@ -17,6 +17,8 @@ class Entity(object):
         #self.mass = 0
         #self.invMass = 0
         #self.w, self.h = (0, 0)
+        self.collideWithDynamics = False
+        self.setAsSolid = True
         
     def update(self, dt):
         #self.position += self.velocity*dt
