@@ -83,16 +83,23 @@ class World(object):
     #Or have this as a master list that's generated once and get subsets of this list
     def setContactingPairs(self):
         '''Find all possible pairings of static and dynamic objects'''
-        if len(self.staticOBJ) > 0:
-            for item1 in self.dynamicOBJ.values():
-                for item2 in self.staticOBJ.values():
-                    self.collisionResolver.addPair((item1, item2))
-                      
+        self.pairsBetweenDynamicStatics()
+        self.pairsBetweenDynamicDynamics()
+
+    def pairsBetweenDynamicDynamics(self):
+        '''All possible pairs between dynamic objects'''
         dynamics = self.dynamicOBJ.values()
         for i, item in enumerate(dynamics):
             subset = dynamics[i+1:]
             for sub in subset:
                 self.collisionResolver.addPair((item, sub))
+    
+    def pairsBetweenDynamicStatics(self):
+        '''All possible pairs between dynamic and static objects'''
+        if len(self.staticOBJ) > 0:
+            for item1 in self.dynamicOBJ.values():
+                for item2 in self.staticOBJ.values():
+                    self.collisionResolver.addPair((item1, item2))
           
     def resolveCollisions(self, dt):
         '''Loop through the possible pairs and check for collisions'''
