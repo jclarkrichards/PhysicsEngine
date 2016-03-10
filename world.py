@@ -92,7 +92,11 @@ class World(object):
         for i, item in enumerate(dynamics):
             subset = dynamics[i+1:]
             for sub in subset:
-                self.collisionResolver.addPair((item, sub))
+                if item.collideWithDynamics:
+                    self.collisionResolver.addPair((item, sub))
+                else:
+                    if sub.collideWithDynamics:
+                        self.collisionResolver.addPair((sub, item))
     
     def pairsBetweenDynamicStatics(self):
         '''All possible pairs between dynamic and static objects'''
