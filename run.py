@@ -66,4 +66,5 @@ while True:
     registry.updateForces(dt)
     world.integrateObjects(dt)
     world.render()
+    world.cleanUp()
     pygame.display.update()
